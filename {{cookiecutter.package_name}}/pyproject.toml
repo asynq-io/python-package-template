@@ -29,7 +29,7 @@ Issues = "https://github.com/{{cookiecutter.owner}}/{{cookiecutter.package_name}
 Source = "https://github.com/{{cookiecutter.owner}}/{{cookiecutter.package_name}}"
 
 [tool.hatch.version]
-path = "{{cookiecutter.package_name}}/__about__.py"
+path = "{{cookiecutter.package_dir}}/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
@@ -44,20 +44,20 @@ dependencies = [
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 check = [
-    "ruff check ./{{cookiecutter.package_name}}",
-    "ruff format --check ./{{cookiecutter.package_name}}",
-    "mypy --install-types --non-interactive {args:{{cookiecutter.package_name}} tests}",
-    "bandit -r ./{{cookiecutter.package_name}}",
+    "ruff check ./{{cookiecutter.package_dir}}",
+    "ruff format --check ./{{cookiecutter.package_dir}}",
+    "mypy --install-types --non-interactive {args:{{cookiecutter.package_dir}} tests}",
+    "bandit -r ./{{cookiecutter.package_dir}}",
 ]
 
 [tool.coverage.run]
-source_pkgs = ["{{cookiecutter.package_name}}", "tests"]
+source_pkgs = ["{{cookiecutter.package_dir}}", "tests"]
 branch = true
 parallel = true
-omit = ["{{cookiecutter.package_name}}/__about__.py"]
+omit = ["{{cookiecutter.package_dir}}/__about__.py"]
 
 [tool.coverage.paths]
-package = ["{{cookiecutter.package_name}}"]
+package = ["{{cookiecutter.package_dir}}"]
 tests = ["tests"]
 
 [tool.coverage.report]

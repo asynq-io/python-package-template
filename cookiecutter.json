@@ -1,5 +1,6 @@
 {
   "package_name": "Package Name",
+  "package_dir": "Package Directory",
   "description": "Project Description",
   "owner": "Owner (user or organization)"
 }
