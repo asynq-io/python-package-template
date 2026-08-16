@@ -1,0 +1,32 @@
+_subdirectory: template
+
+package_name:
+  type: str
+  help: Package (distribution) name, e.g. my-package
+
+package_dir:
+  type: str
+  help: Python module directory
+  default: "{{ package_name | lower | replace('-', '_') }}"
+
+description:
+  type: str
+
+owner:
+  type: str
+  help: Owner (github user or organization)
+
+python_version:
+  type: str
+  choices:
+    - "3.9"
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
+    - "3.14"
+  default: "3.10"
+
+strict_mypy:
+  type: bool
+  default: false
