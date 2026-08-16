@@ -1,0 +1,56 @@
+{%- set python_versions = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"] -%}
+{%- set supported_versions = python_versions[python_versions.index(python_version):] -%}
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize # new changes trigger action
+    branches:
+      - main
+      - dev
+  schedule:
+    # cron every week on monday
+    - cron: "0 0 * * 1"
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        python-version: [{% for version in supported_versions %}"{{ version }}"{{ ", " if not loop.last }}{% endfor %}]
+{%- raw %}
+    name: "Python ${{ matrix.python-version }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.10.6"
+      - name: Install dependencies
+        run: uv sync --locked --dev
+      - name: Ruff
+{%- endraw %}
+        run: |
+          uv run ruff check ./{{ package_dir }}
+          uv run ruff format ./{{ package_dir }} --check
+      - name: Mypy
+        run: uv run mypy .
+      - name: Bandit
+        run: uv run bandit --skip B101 -r ./{{ package_dir }}
+      - name: Pytest
+        run: uv run pytest -v --cov=./{{ package_dir }} --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./tests
+      - name: Pytest Coverage
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: /tmp/coverage.xml
+          junitxml-path: /tmp/pytest.xml

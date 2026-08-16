@@ -1,16 +1,10 @@
 .DS_Store
 
 # python
-*.pyc
-dist/
-*.egg-info
-*.egg
-*.egg/
-*.eggs/
-build/
+__pycache__/
+*.py[oc]
 .cov*
 *.xml
-.tox
 # docker
 .env
 volumes
@@ -18,22 +12,24 @@ volumes
 #virtualenvs
 env/
 venv/
-
+.venv/
 # ide
 .idea/
 vscode/
-.zed/
 
 #pytest
 .pytest_cache/
-__pycache__/
 htmlcov/
 data/
 report.xml
 tmp/
-# mkdocs
-site/
+
 # mypy
 .mypy_cache
-tmp.db
-.python-version
+# ruff
+.ruff_cache
+
+notebooks/
+# zed
+.zed/
+.ropeproject/
